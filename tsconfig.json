@@ -9,6 +9,11 @@
     { "path": "packages/engine" },
     { "path": "packages/iam" },
     { "path": "packages/safety" },
-    { "path": "packages/secrets" }
+    { "path": "packages/secrets" },
+    { "path": "packages/control-plane" },
+    { "path": "packages/render-agent" },
+    { "path": "packages/ingestion" },
+    { "path": "packages/scheduler" },
+    { "path": "packages/presets" }
   ]
 }

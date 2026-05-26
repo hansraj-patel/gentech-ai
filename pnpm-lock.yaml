@@ -27,6 +27,36 @@ importers:
         specifier: ^3.24.1
         version: 3.25.76
 
+  packages/control-plane:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@gentech/cost':
+        specifier: workspace:*
+        version: link:../cost
+      '@gentech/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@gentech/iam':
+        specifier: workspace:*
+        version: link:../iam
+      '@gentech/mock-server':
+        specifier: workspace:*
+        version: link:../mock-server
+      '@gentech/model-registry':
+        specifier: workspace:*
+        version: link:../model-registry
+      '@gentech/orchestrator':
+        specifier: workspace:*
+        version: link:../orchestrator
+      '@gentech/safety':
+        specifier: workspace:*
+        version: link:../safety
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+
   packages/cost:
     dependencies:
       '@gentech/contracts':
@@ -57,6 +87,18 @@ importers:
       '@gentech/contracts':
         specifier: workspace:*
         version: link:../contracts
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+
+  packages/ingestion:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@gentech/secrets':
+        specifier: workspace:*
+        version: link:../secrets
       zod:
         specifier: ^3.24.1
         version: 3.25.76
@@ -98,6 +140,36 @@ importers:
         specifier: ^3.24.1
         version: 3.25.76
 
+  packages/presets:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@gentech/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@gentech/iam':
+        specifier: workspace:*
+        version: link:../iam
+      '@gentech/mock-server':
+        specifier: workspace:*
+        version: link:../mock-server
+      '@gentech/orchestrator':
+        specifier: workspace:*
+        version: link:../orchestrator
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+
+  packages/render-agent:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+
   packages/safety:
     dependencies:
       '@gentech/contracts':
@@ -106,6 +178,27 @@ importers:
       '@gentech/iam':
         specifier: workspace:*
         version: link:../iam
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+
+  packages/scheduler:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@gentech/cost':
+        specifier: workspace:*
+        version: link:../cost
+      '@gentech/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@gentech/iam':
+        specifier: workspace:*
+        version: link:../iam
+      '@gentech/mock-server':
+        specifier: workspace:*
+        version: link:../mock-server
       zod:
         specifier: ^3.24.1
         version: 3.25.76
