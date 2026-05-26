@@ -9,7 +9,9 @@
     "typecheck": "tsc --build --force",
     "test": "vitest run",
     "test:watch": "vitest",
-    "orchestrate": "tsx packages/orchestrator/src/cli.ts"
+    "orchestrate": "tsx packages/orchestrator/src/cli.ts",
+    "engine:demo": "tsx packages/engine/src/cli.ts",
+    "mock:serve": "tsx packages/mock-server/src/serve.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

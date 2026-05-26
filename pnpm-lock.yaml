@@ -36,6 +36,44 @@ importers:
         specifier: workspace:*
         version: link:../model-registry
 
+  packages/engine:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@gentech/mock-server':
+        specifier: workspace:*
+        version: link:../mock-server
+      '@gentech/model-registry':
+        specifier: workspace:*
+        version: link:../model-registry
+      '@gentech/orchestrator':
+        specifier: workspace:*
+        version: link:../orchestrator
+
+  packages/iam:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+
+  packages/mock-server:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      '@gentech/model-registry':
+        specifier: workspace:*
+        version: link:../model-registry
+
   packages/model-registry:
     dependencies:
       '@gentech/contracts':
@@ -59,6 +97,24 @@ importers:
       zod:
         specifier: ^3.24.1
         version: 3.25.76
+
+  packages/safety:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@gentech/iam':
+        specifier: workspace:*
+        version: link:../iam
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+
+  packages/secrets:
+    dependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
 
 packages:
 

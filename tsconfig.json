@@ -5,6 +5,8 @@
     { "path": "packages/model-registry" },
     { "path": "packages/cost" },
     { "path": "packages/orchestrator" },
+    { "path": "packages/mock-server" },
+    { "path": "packages/engine" },
     { "path": "packages/iam" },
     { "path": "packages/safety" },
     { "path": "packages/secrets" }

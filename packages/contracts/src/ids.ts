@@ -15,6 +15,12 @@ export type PipelineId = Brand<string, "PipelineId">;
 export type NodeId = Brand<string, "NodeId">;
 export type ModelId = Brand<string, "ModelId">;
 export type BudgetRef = Brand<string, "BudgetRef">;
+export type JobId = Brand<string, "JobId">;
+export type SegmentId = Brand<string, "SegmentId">;
+export type LeaseId = Brand<string, "LeaseId">;
+export type EventId = Brand<string, "EventId">;
+export type TraceId = Brand<string, "TraceId">;
+export type ResultId = Brand<string, "ResultId">;
 
 const PREFIX = {
   TenantId: "ten_",
@@ -24,6 +30,12 @@ const PREFIX = {
   PipelineId: "pipe_",
   NodeId: "node_",
   BudgetRef: "bud_",
+  JobId: "job_",
+  SegmentId: "seg_",
+  LeaseId: "lease_",
+  EventId: "evt_",
+  TraceId: "trace_",
+  ResultId: "result_",
 } as const;
 
 let counter = 0;
