@@ -106,6 +106,36 @@ importers:
         specifier: workspace:*
         version: link:../model-registry
 
+  packages/e2e:
+    devDependencies:
+      '@gentech/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@gentech/control-plane':
+        specifier: workspace:*
+        version: link:../control-plane
+      '@gentech/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@gentech/iam':
+        specifier: workspace:*
+        version: link:../iam
+      '@gentech/ingestion':
+        specifier: workspace:*
+        version: link:../ingestion
+      '@gentech/mock-server':
+        specifier: workspace:*
+        version: link:../mock-server
+      '@gentech/presets':
+        specifier: workspace:*
+        version: link:../presets
+      '@gentech/scheduler':
+        specifier: workspace:*
+        version: link:../scheduler
+      '@gentech/secrets':
+        specifier: workspace:*
+        version: link:../secrets
+
   packages/engine:
     dependencies:
       '@gentech/contracts':

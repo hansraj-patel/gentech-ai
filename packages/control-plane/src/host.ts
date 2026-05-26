@@ -17,6 +17,8 @@ import {
   type AuthContext,
   type Event,
   type JobStatus,
+  type MediaSegment,
+  type Query,
   type RenderContext,
   type ResultEvent,
   type UISpec,
@@ -25,8 +27,8 @@ import { CATALOG } from "@gentech/model-registry";
 import { buildQuery, orchestrate, RuleBasedPlanner } from "@gentech/orchestrator";
 import { resolveAuth, priorityFor as iamPriorityFor } from "@gentech/iam";
 import { validateQuery as safetyValidateQuery } from "@gentech/safety";
-import { MockBackend, getScenario, mockSegments } from "@gentech/mock-server";
-import { PipelineEngine } from "@gentech/engine";
+import { MockBackend, getScenario, mockSegments, type Scenario } from "@gentech/mock-server";
+import { PipelineEngine, type ComputeClient } from "@gentech/engine";
 import { render } from "@gentech/render-agent";
 import { InProcessEventBus } from "./bus.js";
 import { Recorder } from "./recorder.js";
@@ -45,6 +47,39 @@ export interface HostOptions {
   scenario?: string;
   /** Inference latency seed forwarded to the mock backend. */
   seed?: string;
+  /**
+   * Optional engine `ComputeClient` to drive the compute side of the run (e.g. a
+   * `@gentech/scheduler` `GpuScheduler`). Inference always stays on the
+   * `MockBackend`. Default: the `MockBackend`'s own compute side (unchanged).
+   */
+  computeClient?: ComputeClient;
+  /**
+   * Optional source of the `MediaSegment[]` for a run (e.g. real segments from
+   * `@gentech/ingestion`). Receives the resolved scenario + tenant so the default
+   * stays byte-identical. May be a plain array, an iterable, or a (sync/async)
+   * factory. Default: `mockSegments(scenario, tenantId)` (unchanged).
+   */
+  segmentSource?: SegmentSource;
+}
+
+/** A run's segments: an array/iterable, or a factory producing one. */
+export type SegmentSource =
+  | MediaSegment[]
+  | Iterable<MediaSegment>
+  | ((args: { scenario: Scenario; scenarioId: string; tenantId: string }) =>
+      | MediaSegment[]
+      | Iterable<MediaSegment>
+      | Promise<MediaSegment[] | Iterable<MediaSegment>>);
+
+/** Resolve a `SegmentSource` to a concrete `MediaSegment[]` for the run. */
+async function resolveSegments(
+  source: SegmentSource | undefined,
+  args: { scenario: Scenario; scenarioId: string; tenantId: string },
+  fallback: () => MediaSegment[],
+): Promise<MediaSegment[]> {
+  if (source === undefined) return fallback();
+  const produced = typeof source === "function" ? await source(args) : source;
+  return Array.isArray(produced) ? produced : [...produced];
 }
 
 export interface SubmitInput {
@@ -52,6 +87,8 @@ export interface SubmitInput {
   sources?: string[];
   auth?: AuthContext;
   scenario?: string;
+  /** Optional query constraints (e.g. `maxCredits`) forwarded to orchestrate(03). */
+  constraints?: Query["constraints"];
 }
 
 export interface SubmitOutput {
@@ -93,7 +130,12 @@ export function createHost(opts: HostOptions = {}): Host {
     const scenario = getScenario(scenarioId);
     const sources = input.sources ?? [scenario.sources[0]!.sourceId];
 
-    const query = buildQuery({ text: input.text, sources, tenantId });
+    const query = buildQuery({
+      text: input.text,
+      sources,
+      tenantId,
+      ...(input.constraints ? { constraints: input.constraints } : {}),
+    });
     const traceId = makeId("PipelineId").replace("pipe_", "trace_");
     const renderCtx: RenderContext = { tenantId, role, query: input.text };
 
@@ -160,13 +202,21 @@ export function createHost(opts: HostOptions = {}): Host {
       seed,
       latencyLookup: (id) => latency.get(id),
     });
-    const segments = mockSegments(scenario, tenantId);
+    // Segments: real source (e.g. @gentech/ingestion) if injected, else the mock's.
+    const segments = await resolveSegments(
+      opts.segmentSource,
+      { scenario, scenarioId, tenantId },
+      () => mockSegments(scenario, tenantId),
+    );
+    // Compute: inject a real ComputeClient (e.g. @gentech/scheduler) if supplied;
+    // inference always stays on the MockBackend. Default is the backend's compute.
+    const compute = opts.computeClient ?? backend;
     const engine = new PipelineEngine();
     const { job, results } = await engine.run(
       pipeline,
       segments,
       auth,
-      { inference: backend, compute: backend, sink: bus },
+      { inference: backend, compute, sink: bus },
       { traceId },
     );
 

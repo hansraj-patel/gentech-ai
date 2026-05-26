@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../contracts" },
+    { "path": "../control-plane" },
+    { "path": "../engine" },
+    { "path": "../iam" },
+    { "path": "../ingestion" },
+    { "path": "../mock-server" },
+    { "path": "../presets" },
+    { "path": "../scheduler" },
+    { "path": "../secrets" }
+  ]
+}

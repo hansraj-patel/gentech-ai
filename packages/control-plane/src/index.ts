@@ -20,6 +20,13 @@ export {
   type Host,
   type GatewayHost,
   type HostOptions,
+  type SegmentSource,
   type SubmitInput,
   type SubmitOutput,
 } from "./host.js";
+export {
+  bindMonitorToBus,
+  makeMonitorEmit,
+  type MonitorLike,
+  type BindMonitorOptions,
+} from "./monitor-bus.js";

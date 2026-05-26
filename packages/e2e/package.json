@@ -1,0 +1,28 @@
+{
+  "name": "@gentech/e2e",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "devDependencies": {
+    "@gentech/contracts": "workspace:*",
+    "@gentech/control-plane": "workspace:*",
+    "@gentech/engine": "workspace:*",
+    "@gentech/iam": "workspace:*",
+    "@gentech/ingestion": "workspace:*",
+    "@gentech/mock-server": "workspace:*",
+    "@gentech/presets": "workspace:*",
+    "@gentech/scheduler": "workspace:*",
+    "@gentech/secrets": "workspace:*"
+  }
+}

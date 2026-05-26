@@ -14,6 +14,7 @@
     { "path": "packages/render-agent" },
     { "path": "packages/ingestion" },
     { "path": "packages/scheduler" },
-    { "path": "packages/presets" }
+    { "path": "packages/presets" },
+    { "path": "packages/e2e" }
   ]
 }
