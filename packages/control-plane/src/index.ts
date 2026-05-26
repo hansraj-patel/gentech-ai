@@ -13,3 +13,13 @@ export {
 export { Recorder } from "./recorder.js";
 export { HealthRegistry } from "./health.js";
 export { Gateway, type GatewayOptions, type SubmitFn } from "./gateway.js";
+export {
+  createHost,
+  createGatewayHost,
+  UI_SPEC_TOPIC,
+  type Host,
+  type GatewayHost,
+  type HostOptions,
+  type SubmitInput,
+  type SubmitOutput,
+} from "./host.js";

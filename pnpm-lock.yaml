@@ -50,6 +50,9 @@ importers:
       '@gentech/orchestrator':
         specifier: workspace:*
         version: link:../orchestrator
+      '@gentech/render-agent':
+        specifier: workspace:*
+        version: link:../render-agent
       '@gentech/safety':
         specifier: workspace:*
         version: link:../safety

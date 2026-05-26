@@ -31,6 +31,13 @@ export interface OrchestrateOptions {
   maxRepairs?: number;
   bus?: InProcessEventBus;
   traceId?: string;
+  /** Inject the real module 09 validator (defaults to the stub). */
+  validateQuery?: (
+    query: Query,
+    auth: AuthContext,
+  ) => { allow: boolean; reasons: { code: string; message: string }[] };
+  /** Inject the real module 10 scheduler priority (defaults to the stub). */
+  priorityFor?: (auth: AuthContext) => number;
 }
 
 export interface OrchestrateResult {
@@ -58,7 +65,8 @@ export async function orchestrate(
   const maxRepairs = opts.maxRepairs ?? 2;
 
   // ── module 09 gate (stubbed) ────────────────────────────────────────────────
-  const verdict = validateQuery(query, auth);
+  const validate = opts.validateQuery ?? validateQuery;
+  const verdict = validate(query, auth);
   if (!verdict.allow) {
     throw new ContractError({
       code: "VALIDATION_FAILED",
@@ -73,7 +81,7 @@ export async function orchestrate(
   const { plan, plannerUsed } = await planWithRepair(query, opts, maxRepairs);
 
   // ── stage 2: resolve, estimate, and degrade to fit budget ─────────────────────
-  const priority = priorityFor(auth);
+  const priority = (opts.priorityFor ?? priorityFor)(auth);
   let pipeline = resolve(plan, query, auth, registry, { honorQualityFloor: true, priority });
   let cost = estimate(pipeline, registry);
   let degraded = false;

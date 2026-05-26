@@ -7,7 +7,7 @@
  *
  * Routes:
  *   POST /query                          -> { jobId, traceId }
- *   GET  /events?traceId=&tenantId=      -> text/event-stream (result.event + job.status.changed)
+ *   GET  /events?traceId=&tenantId=      -> text/event-stream (result.event + job.status.changed + ui.spec)
  *   GET  /jobs/:id?tenantId=             -> JobStatus | 404
  *   GET  /traces/:id?tenantId=           -> { spans, decisions }
  */
@@ -18,6 +18,9 @@ import { TOPICS } from "@gentech/contracts";
 import { resolveAuth } from "@gentech/iam";
 import type { InProcessEventBus } from "./bus.js";
 import type { Recorder } from "./recorder.js";
+
+/** Topic the render-agent's `UISpec` is published on (no schema topic yet). */
+const UI_SPEC_TOPIC = "ui.spec";
 
 /** The injected run path. WP-E wires orchestrate→engine; tests pass a fake. */
 export type SubmitFn = (
@@ -110,7 +113,11 @@ export class Gateway {
       connection: "keep-alive",
     });
 
-    const streamable = new Set<string>([TOPICS.resultEvent, TOPICS.jobStatusChanged]);
+    const streamable = new Set<string>([
+      TOPICS.resultEvent,
+      TOPICS.jobStatusChanged,
+      UI_SPEC_TOPIC,
+    ]);
 
     // Subscribe BEFORE replaying so no live event is missed in the gap.
     const off = this.bus.subscribe("*", (event, topic) => {
@@ -121,7 +128,7 @@ export class Gateway {
 
     for (const event of this.bus.replay({ tenantId, traceId })) {
       // replay carries no topic; re-filter on the envelope `type`.
-      if (event.type === TOPICS.resultEvent || event.type === TOPICS.jobStatusChanged) {
+      if (streamable.has(event.type)) {
         writeSse(res, event.type, event);
       }
     }

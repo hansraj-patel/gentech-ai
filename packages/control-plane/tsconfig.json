@@ -13,6 +13,7 @@
     { "path": "../model-registry" },
     { "path": "../mock-server" },
     { "path": "../orchestrator" },
+    { "path": "../render-agent" },
     { "path": "../safety" }
   ]
 }
