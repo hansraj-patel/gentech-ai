@@ -1,0 +1,29 @@
+{
+  "name": "@gentech/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Run in two terminals: `pnpm serve:api` and `pnpm dev:web`' && pnpm dev:web",
+    "dev:web": "vite",
+    "serve:api": "tsx server/index.ts",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.mts"
+  },
+  "dependencies": {
+    "@gentech/contracts": "workspace:*",
+    "@gentech/control-plane": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.13.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  }
+}
